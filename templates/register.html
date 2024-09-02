@@ -1,0 +1,57 @@
+{% extends 'index.html' %}
+{% block title %}
+Register page - ApptiMock
+{% endblock title %}
+{% block content %}
+   
+    <!-- main content -->
+    <h1 class="display-4 text-center my-5">Sign Up</h1>
+
+    <div class="container">
+        <div class="row row-cols-sm-1 row-cols-lg-3 container">
+            <div class="col-12">
+
+            </div>
+            <div class="col-12">
+                <div>
+                    {% for msg in messages %}
+                    <h5 class="text-danger">{{msg}}</h5>
+                    {% endfor %}
+                </div>
+                <!-- form -->
+                <form method="post" action="">
+                   {% csrf_token %}
+                    <div class="mb-3">
+                        <label for="exampleInputEmail1" class="form-label visually-hidden">Email address</label>
+                        <input type="email" name="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"
+                            placeholder="Email address" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="exampleInputUsername" class="form-label visually-hidden">Username</label>
+                        <input type="text" name="username" class="form-control" id="exampleInputUsername" aria-describedby="emailHelp"
+                            placeholder="Username" required>
+
+                    </div>
+                    <div class="mb-3">
+                        <label for="exampleInputPassword1" class="form-label visually-hidden">Password</label>
+                        <input type="password" name="password" class="form-control" id="exampleInputPassword1" placeholder="Password" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="exampleInputPassword2" class="form-label visually-hidden">Confirm Password</label>
+                        <input type="password" name="password2" class="form-control" id="exampleInputPassword2"
+                            placeholder="Confirm Password" required>
+                    </div>
+                    <div class="mb-3 form-check">
+                        <input type="checkbox" class="form-check-input" id="exampleCheck1" required>
+                        <label class="form-check-label" for="exampleCheck1"><a href="{% url 'terms_conditions' %}">Accept terms and conditions.</a></label>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Register</button>
+                    <p>Already have an Account? <a href="{% url 'login'%}">Click here.</a></p>
+                </form>
+            </div>
+            <div class="col-12">
+
+            </div>
+        </div>
+    </div>
+{% endblock content  %}

@@ -1,0 +1,143 @@
+{% extends 'index.html' %}
+{% block title %} {{quiz.title1}} - ApptiMock{% endblock title %}
+{% block content %} 
+<!-- main content -->
+    <h1 class="display-4 text-center my-5">{{quiz.title1}} - ({{quiz.question_set.all|length}})</h1>
+    <p class="fs-4 text-center container">{{quiz.description1}}</p>
+    <div class="container">
+        <div class="d-flex justify-content-between">
+            <span class="fs-5">{{quiz.created_at1}}</span>
+            <span class="fs-5" id="timer">10:00</span>
+        </div>
+         {% for msg in messages %}
+         <div id="message-div">
+            <h4 class="text-center text-success">
+                {{msg}}
+            </h4>
+         </div>
+         {% endfor %}
+        <div class="questions my-4">
+        <!-- questions -->
+        {% for ques in quiz.question_set.all %}
+            <!-- q1 -->
+            <div class="card my-2 question">
+                <div class="card-header fw-bold">
+                    Question {{forloop.counter}}
+                </div>
+                <div class="card-body">
+                    <p class="card-text">{{ques.text}}</p>
+                    {% for opt in ques.choice_set.all %}
+                    <div class="form-check">
+                        <label class="form-check-label" for="{{opt.id}}">  
+                        <input class="form-check-input" value="{{opt.text}}" type="radio" name="{{opt.question.id}}" id="{{opt.id}}">
+                            {{opt.text}}
+                        </label>
+                        {% if opt.is_correct %}
+                        <span class="visually-hidden correct-answer" >{{opt.text}}</span>
+                        {% endif %}
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        {% endfor %}
+        </div>
+        <form action="" method="post" id="quiz-form">
+            {% csrf_token %}
+            <!-- hidden input feild for score -->
+             <input type="hidden" name="score" id="user-score" value="0">
+            <!-- submit buttom -->
+            <button type="submit" id="submit-button" class="btn btn-primary my-4">Submit Quiz!</button>
+        </form>
+        </div>
+    </div>
+<script>
+    // Elements 
+    var submitButton=document.getElementById("submit-button");
+    var timerSpan=document.getElementById("timer");
+    var questions=document.querySelectorAll(".question");
+    var quiz_duration =  (questions.length) * 60; //convert in seconds
+    var quizForm=document.getElementById("quiz-form");
+        var userScoreInput=document.getElementById("user-score");
+    // timer
+    function update_timer(){
+        var minutes = Math.floor(quiz_duration / 60);
+        var seconds = quiz_duration % 60; //remainder
+        
+        timerSpan.innerText = minutes +"m"+ seconds+"s";
+
+        // check if the time ended
+        if (quiz_duration <= 0){
+            //submit the quiz automatically
+            clearTimeout(quizTimerId);
+            submitQuiz();
+        }else if(document.getElementById("message-div")){
+           //means quiz is submitted than you have to highlight the options which is correct
+           clearTimeout(quizTimerId);
+           highLightCorrectAnswers();
+        }
+        else{
+            // decreament the timer value by 1 second
+            quiz_duration--;
+
+        }
+
+    }
+    //function to submit the quiz
+    function submitQuiz(){
+        // calculate the score
+        calculateScore();
+
+        // submit the quiz
+        quizForm.submit();
+
+    }
+
+    //function to calculateScore and right answer
+    function calculateScore(){
+      var score=0;
+
+      //loop through each question
+      questions.forEach(question =>{
+        var selectedInput = question.querySelector("input:checked");
+        var correcttAnswer = question.querySelector(".correct-answer").innerText;
+        
+        // check if the answer is correcrt or not
+        if (selectedInput && selectedInput.value===correcttAnswer){
+            score += 1;
+        }
+
+      });
+
+      // update the hidden iput feild with score in form
+      userScoreInput.value=score;
+
+    }
+    //check right answers & calculate score
+
+    //highlight the correct options while showing results
+    function highLightCorrectAnswers()
+    {
+         questions.forEach(question=>{
+           var correctAnswer=  question.querySelector(".correct-answer");
+           correctAnswer.previousElementSibling.querySelector("input").classList.add("bg-success");
+           correctAnswer.previousElementSibling.classList.add("fw-bold");
+           
+         });
+         //disable submit 
+          submitButton.disabled=true;
+
+         //disable all options
+        var options = document.querySelectorAll(".form-check-input");
+        options.forEach(option=>{
+            option.disabled=true;
+        });
+
+    }
+    // attach event listener to submit buttom
+   submitButton.addEventListener("click",submitQuiz)
+
+   //timer interval
+   quizTimerId = setInterval(update_timer,1000);
+   
+</script>
+{% endblock content %}
