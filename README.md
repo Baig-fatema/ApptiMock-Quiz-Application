@@ -2,6 +2,7 @@
 
 ApptiMock is a comprehensive quiz application built using HTML, CSS, JavaScript, and Django. This application features multiple pages including a home page, leadership page, quiz page, about page, registration and login pages, a dashboard for superusers, and a blogs page.
 
+![home view](home_view.png)
 ## Features
 
 - **Home Page:** Introduction and navigation to other sections of the app.
@@ -31,7 +32,7 @@ git clone https://github.com/Baig-fatema/ApptiMock-Quiz-Application.git
 ```
 ### Navigate to the Project Directory
 ```bash
-cd ApptiMocl-Quiz-Application
+cd ApptiMock-Quiz-Application
 ```
 ### Create a Virtual Environment
 ```bash
