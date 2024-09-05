@@ -73,6 +73,32 @@ Access the superuser dashboard at http://127.0.0.1:8000/admin to manage the appl
 Contributing
 Contributions are welcome! Please open issues or submit pull requests to enhance the project.
 
+## Troubleshooting
+
+If you encounter an error stating `quizApp not found`, it likely means that the `quizApp` Django application has not been created yet. You can easily create this application by running the following command:
+
+```bash
+python manage.py startapp quizApp
+```
+
+If you encounter the error `Profile matching query does not exist`, it typically means that the profile for the superuser has not been created. To resolve this issue, you need to create a profile through the Django admin panel.
+
+### Solution
+
+1. Ensure your server is running:
+    ```bash
+    python manage.py runserver
+    ```
+
+2. Open your web browser and navigate to the Django admin panel:
+    ```
+    http://127.0.0.1:8000/admin
+    ```
+
+3. Log in with your superuser credentials.
+
+4. Once logged in, go to the section where profiles are managed and create a new profile for the superuser if it doesn't exist.
+
 ### License
 This project is licensed under the MIT License. See the LICENSE file for details.
 
